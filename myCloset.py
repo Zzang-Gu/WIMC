@@ -1,28 +1,100 @@
+import io
 import customtkinter as ctt
 from PIL import Image
 
+import db
+
+class ClothImage(ctt.CTkScrollableFrame):
+    def __init__(self, master, row):
+        super().__init__(master, width=855, height=500, fg_color="#F5F5ED")
+
+        self.clothId = row[0]
+        self.clothNm = row[1]
+        self.clothImg = row[2]
+        self.clothTp = row[3]
+        self.clothColor = row[4]
+
+        self.imgPola = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), dark_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), size=(194, 225))
+
+        ctt.CTkLabel(self, image=self.imgPola, text="").grid()
+
+class ClothsFrame(ctt.CTkScrollableFrame):
+    def __init__(self, master, userId):
+        super().__init__(master, width=855, height=500, fg_color="#F5F5ED")
+
+        self.userId = userId
+
+        self.imgPola = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), dark_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), size=(194, 225))
+
+        # TOP BOTTOM SHOES
+        self.tpCd = "TOP"
+
+        self.showCloths()
+
+    def showCloths(self):
+        # self.cloths = []
+
+        columns, rows = db.selectCloths(self.userId, self.tpCd)
+
+        for idx, row in enumerate(rows):
+            frmCloth = ClothImage(self, row)
+            frmCloth.grid(row=idx//4, column=idx%4, padx=10, pady=10)
+
+        print(io.BytesIO(rows[0][2]))
+        # self.imgTest = ctt.CTkImage(light_image=Image.frombytes("L", (174, 177), rows[0][2]), dark_image=Image.frombytes("L", (174, 177), rows[0][2]), size=(174, 177))
+        self.imgTest = ctt.CTkImage(light_image=Image.open(io.BytesIO(rows[0][2])), dark_image=Image.open(io.BytesIO(rows[0][2])), size=(174, 177))
+        ctt.CTkLabel(self, image=self.imgTest, text="").place(x=200, y=300)
+
+    def refresh(self):
+        self.showCloths()
+
 class MyCloset(ctt.CTkFrame):
-    def __init__(self, master, width, height, **kwargs):
-        super().__init__(master, width, height, **kwargs)
+    def __init__(self, master, userId, **kwargs):
+        super().__init__(master, width=1432, height=805, **kwargs)
 
-        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\MyCloset\\background.png"),
-                                     dark_image=Image.open(".\\img\\MyCloset\\background.png"),
-                                     size=(1432, 805))
+        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\background1432x805.png"), dark_image=Image.open(".\\img\\myCloset\\background1432x805.png"), size=(1432, 805))
+        self.labelBackground = ctt.CTkLabel(self, image=imgBackground, text="")
+        self.labelBackground.place(x=0, y=0)
 
-        self.labelTitle = ctt.CTkLabel(self, image=imgBackground, text="")
-        self.labelTitle.grid()
+        imgWindow = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\window849x531.png"), dark_image=Image.open(".\\img\\myCloset\\window849x531.png"), size=(1200, 700))
+        ctt.CTkLabel(self, image=imgWindow, text="", fg_color="transparent").place(x=116, y=52)
+
+        self.scrFrmCloths = ClothsFrame(self, userId)
+        self.scrFrmCloths.place(x=289, y=200)
+
+        btnTop = ctt.CTkButton(self, text="상의", width=145, height=47)
+        btnBottom = ctt.CTkButton(self, text="하의", width=145, height=47)
+        btnShoes = ctt.CTkButton(self, text="신발", width=145, height=47)
+        btnTop.place(x=0, y=0)
+        btnBottom.place(x=200, y=0)
+        btnShoes.place(x=400, y=0)
 
 class App(ctt.CTk):
     def __init__(self):
         super().__init__()
+
+        self.title("WIMC")
         self.geometry("1432x805")
 
         # self.grid_rowconfigure(0, weight=1)
         # self.grid_columnconfigure(0, weight=1)
 
-        self.frameMyCloset = MyCloset(master=self, width=1432, height=805)
-        self.frameMyCloset.grid(row=0, column=0, padx=0, pady=0, sticky="nsew")
+        self.frmMyCloset = MyCloset(master=self, userId="20231662")
+        self.frmMyCloset.place(x=0, y=0)
 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+
+    # app = ctt.CTk()
+    # app.title("my app")
+    # app.geometry("400x150")
+
+    # button = ctt.CTkButton(app, text="my button")
+    # button.grid(row=0, column=0, padx=20, pady=20)
+
+    # label = ctt.CTkLabel(app, text="CTkLabel", fg_color="transparent")
+    # label.grid(row=0, column=1, padx=20, pady=20)
+
+    # app.mainloop()
+
