@@ -5,8 +5,8 @@ class Login(ctt.CTkFrame):
     def __init__(self, master, width, height, **kwargs):
         super().__init__(master, width, height, **kwargs)
 
-        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\MyCloset\\background.png"),
-                                     dark_image=Image.open(".\\img\\MyCloset\\background.png"),
+        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\MyCloset\\background1432x805.png"),
+                                     dark_image=Image.open(".\\img\\MyCloset\\background1432x805.png"),
                                      size=(1432, 805))
 
         loginBox = ctt.CTkImage(light_image=Image.open("img/login/login.png"),
@@ -17,8 +17,8 @@ class Login(ctt.CTkFrame):
                                         dark_image=Image.open("img/login/loginButton.png"),
                                         size=(307, 92))
 
-        # self.background = ctt.CTkLabel(self, image=imgBackground, text="")
-        # self.background.place(x=0, y=0)
+        self.background = ctt.CTkLabel(self, image=imgBackground, text="")
+        self.background.place(x=0, y=0)
 
         self.loginBox = ctt.CTkLabel(self, image=loginBox, text="", fg_color="#ffffff")
         self.loginBox.place(x=403, y=22)
