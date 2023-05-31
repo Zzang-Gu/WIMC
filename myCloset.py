@@ -4,9 +4,9 @@ from PIL import Image
 
 import db
 
-class ClothImage(ctt.CTkScrollableFrame):
+class ClothInfo(ctt.CTkFrame):
     def __init__(self, master, row):
-        super().__init__(master, width=855, height=500, fg_color="#F5F5ED")
+        super().__init__(master, width=194, height=225, fg_color="#F5F5ED")
 
         self.clothId = row[0]
         self.clothNm = row[1]
@@ -15,12 +15,16 @@ class ClothImage(ctt.CTkScrollableFrame):
         self.clothColor = row[4]
 
         self.imgPola = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), dark_image=Image.open(".\\img\\myCloset\\polaroid194x225.png"), size=(194, 225))
-
         ctt.CTkLabel(self, image=self.imgPola, text="").grid()
 
-class ClothsFrame(ctt.CTkScrollableFrame):
-    def __init__(self, master, userId):
-        super().__init__(master, width=855, height=500, fg_color="#F5F5ED")
+        self.imgCloth = ctt.CTkImage(light_image=Image.open(io.BytesIO(self.clothImg)), dark_image=Image.open(io.BytesIO(self.clothImg)), size=(174, 178))
+        ctt.CTkLabel(self, image=self.imgCloth, text="").place(x=10, y=10)
+
+        ctt.CTkLabel(self, text=self.clothNm, fg_color="#FFFFFF", width=180, height=20).place(x=7, y=190)
+
+class ClothList(ctt.CTkScrollableFrame):
+    def __init__(self, master, width, height, userId):
+        super().__init__(master, width, height, fg_color="#F5F5ED")
 
         self.userId = userId
 
@@ -37,13 +41,8 @@ class ClothsFrame(ctt.CTkScrollableFrame):
         columns, rows = db.selectCloths(self.userId, self.tpCd)
 
         for idx, row in enumerate(rows):
-            frmCloth = ClothImage(self, row)
-            frmCloth.grid(row=idx//4, column=idx%4, padx=10, pady=10)
-
-        print(io.BytesIO(rows[0][2]))
-        # self.imgTest = ctt.CTkImage(light_image=Image.frombytes("L", (174, 177), rows[0][2]), dark_image=Image.frombytes("L", (174, 177), rows[0][2]), size=(174, 177))
-        self.imgTest = ctt.CTkImage(light_image=Image.open(io.BytesIO(rows[0][2])), dark_image=Image.open(io.BytesIO(rows[0][2])), size=(174, 177))
-        ctt.CTkLabel(self, image=self.imgTest, text="").place(x=200, y=300)
+            frmClothInfo = ClothInfo(self, row)
+            frmClothInfo.grid(row=idx//4, column=idx%4, padx=10, pady=10)
 
     def refresh(self):
         self.showCloths()
@@ -56,11 +55,11 @@ class MyCloset(ctt.CTkFrame):
         self.labelBackground = ctt.CTkLabel(self, image=imgBackground, text="")
         self.labelBackground.place(x=0, y=0)
 
-        imgWindow = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\window849x531.png"), dark_image=Image.open(".\\img\\myCloset\\window849x531.png"), size=(1200, 700))
-        ctt.CTkLabel(self, image=imgWindow, text="", fg_color="transparent").place(x=116, y=52)
+        imgWindow = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\window849x531.png"), dark_image=Image.open(".\\img\\myCloset\\window849x531.png"), size=(1121, 703))
+        ctt.CTkLabel(self, image=imgWindow, text="", fg_color="transparent").place(x=155, y=61)
 
-        self.scrFrmCloths = ClothsFrame(self, userId)
-        self.scrFrmCloths.place(x=289, y=200)
+        self.scrFrmClothList = ClothList(self, width=855, height=500, userId=userId)
+        self.scrFrmClothList.place(x=289, y=240)
 
         btnTop = ctt.CTkButton(self, text="상의", width=145, height=47)
         btnBottom = ctt.CTkButton(self, text="하의", width=145, height=47)
