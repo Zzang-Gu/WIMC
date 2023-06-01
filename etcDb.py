@@ -64,3 +64,23 @@ def insertCloths(userId, clothNm, clothImg, tpCd, colorCd, prchsDe, lastUseDe):
 
     cur.execute(query, record)
     cur.commit()
+
+def selectUser(userId):
+    cur = connectDB()
+
+    query = """
+        SELECT 
+            * 
+        FROM
+            WIMC_USER_INFO
+        WHERE
+            USER_ID = ?
+    """
+
+    record = (userId)
+    result = cur.execute(query, record)
+
+    columns = [column[0] for column in cur.description]
+    rows = result.fetchall()
+
+    return rows
