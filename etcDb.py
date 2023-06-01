@@ -1,7 +1,7 @@
 import pyodbc
 
 def connectDB():
-    conn = pyodbc.connect("DSN=WIMC")
+    conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=.\WIMC.accdb;')
     cur = conn.cursor()
 
     return cur
