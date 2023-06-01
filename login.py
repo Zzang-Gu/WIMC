@@ -48,4 +48,5 @@ class Login(ctt.CTkFrame):
             self.master.alert("로그인 실패", "일치하는 사용자 정보가 없습니다.")
             return
 
+        self.master.userInfo = response[0]
         self.master.updatePage(Lobby)

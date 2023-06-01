@@ -10,6 +10,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         # initialize
+        self.userInfo = None
         self.geometry("1432x805")
 
         # Default Page Setting (default=Loading)
