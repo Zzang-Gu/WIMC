@@ -12,11 +12,14 @@ class ClothInfo(ctt.CTkFrame):
 
         self.master = master
 
+        self.row = row
         self.clothId = row[0]
         self.clothNm = row[1]
         self.clothImg = row[2]
-        self.clothTp = row[3]
-        self.clothColor = row[4]
+        self.clothTpCd = row[3]
+        self.clothTp = row[4]
+        self.clothColorCd = row[5]
+        self.clothColor = row[6]
 
         self.imgPola = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\polaroid194x225.png"), dark_image=Image.open(".\\img\\winMyCloset\\polaroid194x225.png"), size=(194, 225))
         self.labelPola = ctt.CTkLabel(self, image=self.imgPola, text="")
@@ -33,10 +36,10 @@ class ClothInfo(ctt.CTkFrame):
         self.labelText.bind("<Double-Button-1>", self.clickClothInfo)
 
     def clickClothInfo(self, event):
-        if self.master.toplevel_window is None or not self.master.toplevel_window.winfo_exists():
-            self.master.toplevel_window = popRegCloth.ToplevelWindow(self)
+        if self.master.popup is None or not self.master.popup.winfo_exists():
+            self.master.popup = popRegCloth.RegCloth(self.row)
         else:
-            self.master.toplevel_window.focus()
+            self.master.popup.focus()
 
 class ClothList(ctt.CTkScrollableFrame):
     def __init__(self, master, width, height, userId):
@@ -46,7 +49,7 @@ class ClothList(ctt.CTkScrollableFrame):
 
         self.imgPola = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\polaroid194x225.png"), dark_image=Image.open(".\\img\\winMyCloset\\polaroid194x225.png"), size=(194, 225))
 
-        self.toplevel_window = None
+        self.popup = None
 
         self.cloths = []
         self.showCloths("ALL")
@@ -66,7 +69,7 @@ class ClothList(ctt.CTkScrollableFrame):
             self.cloths.append(frmClothInfo)
 
 class MyCloset(ctt.CTkFrame):
-    def __init__(self, master, userId, **kwargs):
+    def __init__(self, master, **kwargs):
         super().__init__(master, width=1432, height=805, **kwargs)
 
         imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"), dark_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"), size=(1432, 805))
@@ -98,7 +101,7 @@ class MyCloset(ctt.CTkFrame):
         self.labelTrash = ctt.CTkLabel(self, image=imgTrash, fg_color="#F5F5ED", text="").place(x=1100, y=170)
         self.labelBack.bind("<Button-1>", self.clickTrash)
 
-        self.scrFrmClothList = ClothList(self, width=855, height=500, userId=userId)
+        self.scrFrmClothList = ClothList(self, width=855, height=500, userId=master.userId)
         self.scrFrmClothList.place(x=282, y=240)
 
     def clickBack(self, event):

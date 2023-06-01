@@ -1,9 +1,13 @@
-import customtkinter as ctt
 from PIL import Image
+import customtkinter as ctt
+
+import winMyCloset
 
 class Lobby(ctt.CTkFrame):
-    def __init__(self, master, width, height, **kwargs):
-        super().__init__(master, width, height, **kwargs)
+    def __init__(self, master, **kwargs):
+        super().__init__(master, 1432, 805, **kwargs)
+
+        self.master = master
 
         imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
                                      dark_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
@@ -11,6 +15,14 @@ class Lobby(ctt.CTkFrame):
 
         self.labelTitle = ctt.CTkLabel(self, image=imgBackground, text="")
         self.labelTitle.grid()
+
+        self.imgBack = ctt.CTkImage(light_image=Image.open(".\\img\\lobby\\greenPostit220x234.png"), dark_image=Image.open(".\\img\\lobby\\greenPostit220x234.png"), size=(220, 234))
+        self.menu1 = ctt.CTkLabel(self, image=self.imgBack, bg_color="#E3F2ED", fg_color="#E3F2ED", text="")
+        self.menu1.place(x=100, y=100)
+        self.menu1.bind("<Button-1>", self.callMenu1)
+
+    def callMenu1(self, event):
+        self.master.updatePage(winMyCloset.MyCloset)
 
 class App(ctt.CTk):
     def __init__(self):

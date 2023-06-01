@@ -7,8 +7,8 @@ import etcDb
 from lobby import Lobby
 
 class Login(ctt.CTkFrame):
-    def __init__(self, master, width, height, **kwargs):
-        super().__init__(master, width, height, **kwargs)
+    def __init__(self, master, **kwargs):
+        super().__init__(master, 1432, 805, **kwargs)
         self.master = master
 
         self.initialize()
@@ -48,5 +48,5 @@ class Login(ctt.CTkFrame):
             self.master.alert("로그인 실패", "일치하는 사용자 정보가 없습니다.")
             return
 
-        self.master.userInfo = response[0]
+        self.master.userId = response[0][0]
         self.master.updatePage(Lobby)

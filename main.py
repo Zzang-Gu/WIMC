@@ -10,7 +10,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         # initialize
-        self.userInfo = None
+        self.userId = None
         self.geometry("1432x805")
 
         # Default Page Setting (default=Loading)
@@ -22,12 +22,12 @@ class App(customtkinter.CTk):
             # self.destory()
             self.currentPage = None
 
-        self.currentPage = targetPage(self, 1432, 805)
+        self.currentPage = targetPage(self)
         self.currentPage.place(x=0, y=0)
 
     def alert(self, title, message):
         tkmb.showerror(title=title, message=message)
 
-
-app = App()
-app.mainloop()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
