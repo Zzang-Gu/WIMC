@@ -1,7 +1,8 @@
 import pyodbc
 
 def connectDB():
-    conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=.\WIMC.accdb;')
+    # conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=.\WIMC.accdb;')
+    conn = pyodbc.connect("DSN=WIMC")
     cur = conn.cursor()
 
     return cur
@@ -84,3 +85,24 @@ def selectUser(userId):
     rows = result.fetchall()
 
     return rows
+
+def updateProfile(userId, userName, userGender, userBirthDate):
+    cur = connectDB()
+
+    query = """
+        UPDATE
+            WIMC_USER_INFO
+        SET
+            USER_NM = ?,
+            SEX_CD = ?,
+            BRTHD_DE = ?
+        WHERE
+            USER_ID = ?
+    """
+
+    record = (userName, userGender, userBirthDate, userId)
+
+    print(query, record)
+
+    cur.execute(query, record)
+    cur.commit()

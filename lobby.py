@@ -3,6 +3,7 @@ import customtkinter as ctt
 
 import winMyCloset
 from profile import Profile
+from dailyLookRegister import DailyLookRegister
 
 class Lobby(ctt.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -64,7 +65,7 @@ class Lobby(ctt.CTkFrame):
         self.menu6.place(x=1000, y=460)
         self.menu6.bind("<Button-1>", self.callMenu6)
 
-    def callProfileEdit(self):
+    def callProfileEdit(self, event):
         self.master.updatePage(Profile)
 
     def callMenu1(self, event):
@@ -74,7 +75,7 @@ class Lobby(ctt.CTkFrame):
         self.master.updatePage(winMyCloset.MyCloset)
 
     def callMenu3(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(DailyLookRegister)
 
     def callMenu4(self, event):
         self.master.updatePage(winMyCloset.MyCloset)
