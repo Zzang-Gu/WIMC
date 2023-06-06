@@ -169,6 +169,25 @@ def insertClothUseHist(useDe, tpCd, clothId, userId):
     cur.execute(query, record)
     cur.commit()
 
+def updateClothUseHist(useDe, tpCd, clothId, userId):
+    cur = connectDB()
+
+    query = """
+                UPDATE 
+                    WIMC_CLOTH_USE_HIST
+                SET                     
+                    CLOTH_ID = ?           
+                WHERE
+                    USE_DE = ? and
+                    TP_CD = ? and
+                    USER_ID = ?
+        """
+
+    record = (clothId, useDe, tpCd, userId)
+
+    cur.execute(query, record)
+    cur.commit()
+
 def selectClothsUseHist(userId):
     cur = connectDB()
 

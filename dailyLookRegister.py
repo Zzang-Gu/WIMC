@@ -1,6 +1,8 @@
+import io
 import customtkinter as ctt
 from PIL import Image
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from dateutil import relativedelta
 import etcDb
 
 # pages
@@ -99,52 +101,143 @@ class DailyLookRegister(ctt.CTkFrame):
         self.topList = etcDb.selectCloths(self.master.userId, "TOP")[1]
         self.topNames = list(map(lambda item: item[1], self.topList))
 
-        self.cmboxTop = ctt.CTkComboBox(self, values=self.topNames, state="readonly")
+        self.cmboxTop = ctt.CTkComboBox(self, values=self.topNames, state="readonly", command=self.updateClothImage)
         self.cmboxTop.set("")
         self.cmboxTop.place(x=270, y=618)
 
         self.bottomList = etcDb.selectCloths(self.master.userId, "BOTTOM")[1]
         self.bottomNames = list(map(lambda item: item[1], self.bottomList))
-        self.cmboxBottom = ctt.CTkComboBox(self, values=self.bottomNames, state="readonly")
+
+        self.cmboxBottom = ctt.CTkComboBox(self, values=self.bottomNames, state="readonly", command=self.updateClothImage)
         self.cmboxBottom.set("")
         self.cmboxBottom.place(x=653, y=618)
 
         self.shoesList = etcDb.selectCloths(self.master.userId, "SHOES")[1]
         self.shoesNames = list(map(lambda item: item[1], self.shoesList))
-        self.cmboxShoes = ctt.CTkComboBox(self, values=self.shoesNames, state="readonly")
+
+        self.cmboxShoes = ctt.CTkComboBox(self, values=self.shoesNames, state="readonly", command=self.updateClothImage)
         self.cmboxShoes.set("")
         self.cmboxShoes.place(x=1026, y=618)
 
-        self.targetDate = ctt.StringVar()
+        # self.targetDate = ctt.StringVar()
+        # today = date.today().isoformat().replace("-", "")
+        # self.targetDate.set(today)
+        # self.dateInput = ctt.CTkEntry(self, textvariable=self.targetDate, placeholder_text="날짜 입력",
+        #                                    bg_color="#ffffff", border_width=0, width=108, height=31)
+        # self.dateInput.place(x=776, y=190)
+
         today = date.today().isoformat().replace("-", "")
-        self.targetDate.set(today)
-        self.dateInput = ctt.CTkEntry(self, textvariable=self.targetDate, placeholder_text="날짜 입력",
-                                           bg_color="#ffffff", border_width=0, width=108, height=31)
+        dateList = []
+        for i in range(31):
+            date1 = date.today() - timedelta(days=i)
+            dateList.append(date1.isoformat().replace("-", ""))
+        self.dateInput = ctt.CTkComboBox(self, values=dateList, state="readonly", command=self.initializeClothImage)
+        self.dateInput.set(today)
         self.dateInput.place(x=776, y=190)
+
+        self.initializeClothImage(None)
 
     def clickBack(self, event):
         self.destroy()
+
+    def initializeClothImage(self, event):
+        clothDetail = etcDb.selectClothsUseHistByDate(self.master.userId, self.dateInput.get())
+
+        top = None
+        bottom = None
+        shoes = None
+
+        for clothItem in clothDetail:
+            if clothItem[4] == "TOP":
+                top = clothItem
+            elif clothItem[4] == "BOTTOM":
+                bottom = clothItem
+            elif clothItem[4] == "SHOES":
+                shoes = clothItem
+
+        defaultThumbnail = ctt.CTkImage(light_image=Image.open(".\\img\\daily\\itemThumbnail239x265.png"),
+                                    dark_image=Image.open(".\\img\\daily\\itemThumbnail239x265.png"),
+                                    size=(239, 265))
+
+        topThumbnail = defaultThumbnail
+        bottomThumbnail = defaultThumbnail
+        shoesThumbnail = defaultThumbnail
+
+        self.cmboxTop.set("")
+        if top is not None:
+            topThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(top[3])),
+                                       dark_image=Image.open(io.BytesIO(top[3])),
+                                       size=(239, 265))
+            self.cmboxTop.set(top[2])
+
+        self.cmboxBottom.set("")
+        if bottom is not None:
+            bottomThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(bottom[3])),
+                                        dark_image=Image.open(io.BytesIO(bottom[3])),
+                                        size=(239, 265))
+            self.cmboxBottom.set(bottom[2])
+
+        self.cmboxShoes.set("")
+        if shoes is not None:
+            shoesThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(shoes[3])),
+                                        dark_image=Image.open(io.BytesIO(shoes[3])),
+                                        size=(239, 265))
+            self.cmboxShoes.set(shoes[2])
+
+
+        self.topThumbnail = ctt.CTkLabel(self, image=topThumbnail, text="")
+        self.topThumbnail.place(x=219, y=331)
+
+        self.bottomThumbnail = ctt.CTkLabel(self, image=bottomThumbnail, text="")
+        self.bottomThumbnail.place(x=595, y=331)
+
+        self.shoesThumbnail = ctt.CTkLabel(self, image=shoesThumbnail, text="")
+        self.shoesThumbnail.place(x=968, y=331)
+    def updateClothImage(self, event):
+        top = self.cmboxTop.get()
+        bottom = self.cmboxBottom.get()
+        shoes = self.cmboxShoes.get()
+
+        defaultThumbnail = ctt.CTkImage(light_image=Image.open(".\\img\\daily\\itemThumbnail239x265.png"),
+                                    dark_image=Image.open(".\\img\\daily\\itemThumbnail239x265.png"),
+                                    size=(239, 265))
+
+        topThumbnail = defaultThumbnail
+        bottomThumbnail = defaultThumbnail
+        shoesThumbnail = defaultThumbnail
+
+        matchTopItem = list(filter(lambda item: item[1] == top, self.topList))
+        if len(matchTopItem) > 0:
+            topThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(matchTopItem[0][2])),
+                                       dark_image=Image.open(io.BytesIO(matchTopItem[0][2])),
+                                       size=(239, 265))
+
+        matchBottomItem = list(filter(lambda item: item[1] == bottom, self.bottomList))
+        if len(matchBottomItem) > 0:
+            bottomThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(matchBottomItem[0][2])),
+                                        dark_image=Image.open(io.BytesIO(matchBottomItem[0][2])),
+                                        size=(239, 265))
+
+        matchShoesItem = list(filter(lambda item: item[1] == shoes, self.shoesList))
+        if len(matchShoesItem) > 0:
+            shoesThumbnail = ctt.CTkImage(light_image=Image.open(io.BytesIO(matchShoesItem[0][2])),
+                                        dark_image=Image.open(io.BytesIO(matchShoesItem[0][2])),
+                                        size=(239, 265))
+
+
+        self.topThumbnail = ctt.CTkLabel(self, image=topThumbnail, text="")
+        self.topThumbnail.place(x=219, y=331)
+
+        self.bottomThumbnail = ctt.CTkLabel(self, image=bottomThumbnail, text="")
+        self.bottomThumbnail.place(x=595, y=331)
+
+        self.shoesThumbnail = ctt.CTkLabel(self, image=shoesThumbnail, text="")
+        self.shoesThumbnail.place(x=968, y=331)
 
     def registerDailyLook(self, event):
         top = self.cmboxTop.get()
         bottom = self.cmboxBottom.get()
         shoes = self.cmboxShoes.get()
-        targetDate = self.targetDate.get()
-
-        if targetDate == "":
-            self.master.alert("등록 오류", "날짜를 입력해주세요. ex) 20230608")
-            return
-
-        isValidDate = False
-        try:
-            datetime.strptime(targetDate, "%Y%m%d")
-            isValidDate = True
-        except ValueError as ve:
-            print("날짜 형식 오류")
-
-        if isValidDate == False:
-            self.master.alert("데일리코디 등록", "올바른 날짜를 입력해주세요. ex) 20230608")
-            return
 
         if top == "" and bottom == "" and shoes == "":
             self.master.alert("데일리코디 등록", "1개 이상의 옷을 선택해주세요")
@@ -165,14 +258,39 @@ class DailyLookRegister(ctt.CTkFrame):
         if len(matchShoesItem) > 0:
             shoesClothId = matchShoesItem[0][0]
 
+
+        targetDate = self.dateInput.get()
+        clothDetail = etcDb.selectClothsUseHistByDate(self.master.userId, targetDate)
+
+        prevTop = None
+        prevBottom = None
+        prevShoes = None
+
+        for clothItem in clothDetail:
+            if clothItem[4] == "TOP":
+                prevTop = clothItem
+            elif clothItem[4] == "BOTTOM":
+                prevBottom = clothItem
+            elif clothItem[4] == "SHOES":
+                prevShoes = clothItem
+
         if topClothId is not None:
-            etcDb.insertClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
+            if prevTop is not None:
+                etcDb.updateClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
+            else:
+                etcDb.insertClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
 
         if bottomClothId is not None:
-            etcDb.insertClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
+            if prevBottom is not None:
+                etcDb.updateClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
+            else:
+                etcDb.insertClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
 
         if shoesClothId is not None:
-            etcDb.insertClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
+            if prevShoes is not None:
+                etcDb.updateClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
+            else:
+                etcDb.insertClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
 
         self.master.info("데일리코디 등록", "등록 완료되었습니다.")
         self.clickBack(None)

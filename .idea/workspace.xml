@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6100dc0e-c929-4137-8753-ae6b9319dac1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/img/daily/background1432x805.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/daily/frame849x531.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/useHistDetail/frame634x682.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/monthlyCody.py" afterDir="false" />
+    <list default="true" id="6100dc0e-c929-4137-8753-ae6b9319dac1" name="Changes" comment="데일리 코디 등록 및 먼슬리코디 페이지 개발 완료">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WIMC.accdb" beforeDir="false" afterPath="$PROJECT_DIR$/WIMC.accdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WIMC.laccdb" beforeDir="false" afterPath="$PROJECT_DIR$/WIMC.laccdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dailyLookRegister.py" beforeDir="false" afterPath="$PROJECT_DIR$/dailyLookRegister.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/etcDb.py" beforeDir="false" afterPath="$PROJECT_DIR$/etcDb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lobby.py" beforeDir="false" afterPath="$PROJECT_DIR$/lobby.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,8 +77,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1686026846556</updated>
-      <workItem from="1686026847481" duration="13753000" />
+      <workItem from="1686026847481" duration="16018000" />
     </task>
+    <task id="LOCAL-00001" summary="데일리 코디 등록 및 먼슬리코디 페이지 개발 완료">
+      <created>1686056750503</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1686056750503</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -101,7 +103,11 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="데일리 코디 등록 및 먼슬리코디 페이지 개발 완료" />
+    <option name="LAST_COMMIT_MESSAGE" value="데일리 코디 등록 및 먼슬리코디 페이지 개발 완료" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/WIMC$main.coverage" NAME="main Coverage Results" MODIFIED="1686056549543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/WIMC$main.coverage" NAME="main Coverage Results" MODIFIED="1686058946012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
