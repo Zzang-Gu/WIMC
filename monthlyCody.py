@@ -1,11 +1,11 @@
 import io
-import customtkinter as ctt
-from PIL import Image
-from datetime import date, datetime, timedelta
 from dateutil import relativedelta
-import etcDb
+from datetime import date, datetime, timedelta
 
-# pages
+from PIL import Image
+import customtkinter as ctt
+
+import db
 
 class MonthlyCody(ctt.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -82,7 +82,7 @@ class MonthlyCody(ctt.CTkFrame):
         currentDate = datetime(year=self.year, month=self.month, day=1).date()
         lastDate = currentDate + relativedelta.relativedelta(month=1) - timedelta(days=1)
 
-        clothList = etcDb.selectClothsUseHist(self.master.userId)
+        clothList = db.selectClothsUseHist(self.master.userId)
         clothList = list(filter(lambda item: datetime.fromisoformat(item[0]).year == self.year and datetime.fromisoformat(item[0]).month == self.month, clothList))
 
         self.dayFont = ctt.CTkFont(family="Arial", size=16, weight="bold")
@@ -148,7 +148,7 @@ class MonthlyCody(ctt.CTkFrame):
         self.closeButton.bind("<Button-1>", lambda _: self.initialize())
 
         targetDate = date(year=year, month=month, day=day)
-        clothDetail = etcDb.selectClothsUseHistByDate(self.master.userId, targetDate.isoformat().replace("-", ""))
+        clothDetail = db.selectClothsUseHistByDate(self.master.userId, targetDate.isoformat().replace("-", ""))
 
         top = None
         bottom = None
@@ -206,4 +206,4 @@ class MonthlyCody(ctt.CTkFrame):
         shoesImageBox = ctt.CTkLabel(self, image=shoesImage, text="")
         shoesImageBox.place(x=456 + 171 * 2, y=154)
 
-        print(year, month, day)
+        # print(year, month, day)

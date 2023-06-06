@@ -1,11 +1,10 @@
 import io
-from datetime import datetime
 
 from PIL import Image
 import customtkinter as ctt
 from CTkMessagebox import CTkMessagebox as ctkmbox
 
-import etcDb
+import db
 
 class MdfCloth(ctt.CTkFrame):
     def __init__(self, master, row, **kwargs):
@@ -26,34 +25,34 @@ class MdfCloth(ctt.CTkFrame):
         self.colorCdList = []
         self.colorValueList = []
 
-        colorList = etcDb.selectColorCd()
+        colorList = db.selectColorCd()
         for _, color in enumerate(colorList):
             self.colorCdList.append(color[0])
             self.colorValueList.append(color[1])
 
-        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\background1432x805.png"), dark_image=Image.open(".\\img\\clothInfo\\background1432x805.png"), size=(1432, 805))
-        self.labelBackground = ctt.CTkLabel(self, image=imgBackground, text="")
-        self.labelBackground.grid()
+        self.ctkImgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\background1432x805.png"), dark_image=Image.open(".\\img\\clothInfo\\background1432x805.png"), size=(1432, 805))
+        self.labBackground = ctt.CTkLabel(self, image=self.ctkImgBackground, text="")
+        self.labBackground.grid()
 
-        imgBack = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\back55x50.png"), dark_image=Image.open(".\\img\\clothInfo\\back55x50.png"), size=(55, 50))
-        self.labelBack = ctt.CTkLabel(self, image=imgBack, text="", fg_color="#E3F2ED")
-        self.labelBack.place(x=50, y=50)
-        self.labelBack.bind("<Button-1>", self.clickBack)
+        ctkImgBack = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\back55x50.png"), dark_image=Image.open(".\\img\\clothInfo\\back55x50.png"), size=(55, 50))
+        self.labBack = ctt.CTkLabel(self, image=ctkImgBack, text="", fg_color="#E3F2ED")
+        self.labBack.place(x=50, y=50)
+        self.labBack.bind("<Button-1>", self.clickBack)
 
-        self.imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\frame634x682.png"), dark_image=Image.open(".\\img\\clothInfo\\frame634x682.png"), size=(634, 682))
-        self.labelBackground = ctt.CTkLabel(self, image=self.imgBackground, bg_color="#E3F2ED", fg_color="#E3F2ED", text="")
-        self.labelBackground.place(x=399, y=62)
+        self.ctkImgFrame = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\frame634x682.png"), dark_image=Image.open(".\\img\\clothInfo\\frame634x682.png"), size=(634, 682))
+        self.labFrame = ctt.CTkLabel(self, image=self.ctkImgFrame, bg_color="#E3F2ED", fg_color="#E3F2ED", text="")
+        self.labFrame.place(x=399, y=62)
 
-        ctt.CTkLabel(self, width=300, height=50, bg_color="#FFFFFF", fg_color="#FFFFFF", text="아이템 수정", font=("JalnanOTF", 30)).place(x=167+399, y=5+62)
+        ctt.CTkLabel(self, width=300, height=50, bg_color="#FFFFFF", fg_color="#FFFFFF", text="아이템 수정", font=("JalnanOTF", 30)).place(x=566, y=67)
 
-        self.imgCloth = ctt.CTkImage(light_image=Image.open(io.BytesIO(self.clothImg)), dark_image=Image.open(io.BytesIO(self.clothImg)), size=(216, 239))
-        self.labelCloth = ctt.CTkLabel(self, image=self.imgCloth, text="")
-        self.labelCloth.place(x=209+399, y=55+62)
+        self.ctkImgCloth = ctt.CTkImage(light_image=Image.open(io.BytesIO(self.clothImg)), dark_image=Image.open(io.BytesIO(self.clothImg)), size=(216, 239))
+        self.labCloth = ctt.CTkLabel(self, image=self.ctkImgCloth, text="")
+        self.labCloth.place(x=209+399, y=55+62)
 
-        self.imgUpload = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\upload45x45.png"), dark_image=Image.open(".\\img\\clothInfo\\upload45x45.png"), size=(45, 45))
-        self.labelUpload = ctt.CTkLabel(self, bg_color="#FFFFFF", fg_color="#FFFFFF", image=self.imgUpload, text="")
-        self.labelUpload.place(x=402+399, y=274+62)
-        self.labelUpload.bind("<Button-1>", self.clothUpload)
+        self.ctkImgUpload = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\upload45x45.png"), dark_image=Image.open(".\\img\\clothInfo\\upload45x45.png"), size=(45, 45))
+        self.labUpload = ctt.CTkLabel(self, image=self.ctkImgUpload, bg_color="#FFFFFF", fg_color="#FFFFFF", text="")
+        self.labUpload.place(x=402+399, y=274+62)
+        self.labUpload.bind("<Button-1>", self.clothUpload)
 
         if self.clothTpCd == "TOP":
             radioVar = ctt.IntVar(value=1)
@@ -65,17 +64,17 @@ class MdfCloth(ctt.CTkFrame):
             radioVar = ctt.IntVar(value=0)
 
         ctt.CTkLabel(self, width=100, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text="카테고리", font=("JalnanOTF", 20)).place(x=79+399, y=325+62)
-        ctt.CTkRadioButton(self, text="상의", bg_color="#FFFFFF", variable=radioVar, value=1, command=lambda: self.mdfTpCd("TOP")).place(x=209+399, y=329+62)
-        ctt.CTkRadioButton(self, text="하의", bg_color="#FFFFFF", variable=radioVar, value=2, command=lambda: self.mdfTpCd("BOTTOM")).place(x=309+399, y=329+62)
-        ctt.CTkRadioButton(self, text="신발", bg_color="#FFFFFF", variable=radioVar, value=3, command=lambda: self.mdfTpCd("SHOES")).place(x=409+399, y=329+62)
+        ctt.CTkRadioButton(self, variable=radioVar, value=1, bg_color="#FFFFFF", text="상의", command=lambda: self.mdfTpCd("TOP")).place(x=209+399, y=329+62)
+        ctt.CTkRadioButton(self, variable=radioVar, value=2, bg_color="#FFFFFF", text="하의", command=lambda: self.mdfTpCd("BOTTOM")).place(x=309+399, y=329+62)
+        ctt.CTkRadioButton(self, variable=radioVar, value=3, bg_color="#FFFFFF", text="신발", command=lambda: self.mdfTpCd("SHOES")).place(x=409+399, y=329+62)
 
-        self.imgUnderLine = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\underLine338x2.png"), dark_image=Image.open(".\\img\\clothInfo\\underLine338x2.png"), size=(338, 2))
+        self.ctkImgUnderLine = ctt.CTkImage(light_image=Image.open(".\\img\\clothInfo\\underLine338x2.png"), dark_image=Image.open(".\\img\\clothInfo\\underLine338x2.png"), size=(338, 2))
 
         ctt.CTkLabel(self, width=100, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text="아이템명", font=("JalnanOTF", 20)).place(x=79+399, y=380+62)
-        ctt.CTkLabel(self, image=self.imgUnderLine, bg_color="#FFFFFF", fg_color="#FFFFFF", text="").place(x=209+399, y=400+62)
+        ctt.CTkLabel(self, image=self.ctkImgUnderLine, bg_color="#FFFFFF", fg_color="#FFFFFF", text="").place(x=209+399, y=400+62)
         sVarClothNm = ctt.StringVar()
         sVarClothNm.set(self.clothNm)
-        self.entClothNm = ctt.CTkEntry(self, textvariable=sVarClothNm, width=338, height=30, border_width=0, bg_color="#FFFFFF")
+        self.entClothNm = ctt.CTkEntry(self, width=338, height=30, border_width=0, bg_color="#FFFFFF", textvariable=sVarClothNm)
         self.entClothNm.place(x=209+399, y=380+62)
 
         ctt.CTkLabel(self, width=100, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text="색상", font=("JalnanOTF", 20)).place(x=79+399, y=435+62)
@@ -84,16 +83,16 @@ class MdfCloth(ctt.CTkFrame):
         self.cmboxColor.place(x=209+399, y=436+62)
 
         ctt.CTkLabel(self, width=100, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text="구입날짜", font=("JalnanOTF", 20)).place(x=79+399, y=490+62)
-        ctt.CTkLabel(self, image=self.imgUnderLine, bg_color="#FFFFFF", fg_color="#FFFFFF", text="").place(x=209+399, y=510+62)
+        ctt.CTkLabel(self, image=self.ctkImgUnderLine, bg_color="#FFFFFF", fg_color="#FFFFFF", text="").place(x=209+399, y=510+62)
         sVarPrchsDe = ctt.StringVar()
         sVarPrchsDe.set(self.prchsDe)
-        self.entPrchsDe = ctt.CTkEntry(self, textvariable=sVarPrchsDe, width=338, height=30, border_width=0, bg_color="#FFFFFF")
+        self.entPrchsDe = ctt.CTkEntry(self, width=338, height=30, border_width=0, bg_color="#FFFFFF", textvariable=sVarPrchsDe)
         self.entPrchsDe.place(x=209+399, y=490+62)
 
         ctt.CTkLabel(self, width=100, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text="사용날짜", font=("JalnanOTF", 20)).place(x=79+399, y=545+62)
         ctt.CTkLabel(self, width=338, height=30, bg_color="#FFFFFF", fg_color="#FFFFFF", text=self.lastUseDe, anchor="w").place(x=216+399, y=545+62)
 
-        btnReg = ctt.CTkButton(self, width=145, height=47, border_width=3, bg_color="#F5F5ED", fg_color="#FFFFFF", hover_color="#AAAAAA", border_color="#000000", text="수정", text_color="#000000", command= lambda: self.saveCloth())
+        btnReg = ctt.CTkButton(self, width=145, height=47, border_width=3, bg_color="#F5F5ED", fg_color="#FFFFFF", hover_color="#AAAAAA", border_color="#000000", text="수정", text_color="#000000", command=self.saveCloth)
         btnReg.place(x=245+399, y=600+62)
 
     def clickBack(self, event):
@@ -108,8 +107,8 @@ class MdfCloth(ctt.CTkFrame):
         file = open(fileNm, "rb")
         self.clothImg = file.read()
 
-        self.imgCloth = ctt.CTkImage(light_image=Image.open(io.BytesIO(self.clothImg)), dark_image=Image.open(io.BytesIO(self.clothImg)), size=(216, 239))
-        self.labelCloth.configure(image=self.imgCloth)
+        self.ctkImgCloth = ctt.CTkImage(light_image=Image.open(io.BytesIO(self.clothImg)), dark_image=Image.open(io.BytesIO(self.clothImg)), size=(216, 239))
+        self.labCloth.configure(image=self.ctkImgCloth)
 
     def saveCloth(self):
         self.clothNm = self.entClothNm.get()
@@ -120,7 +119,7 @@ class MdfCloth(ctt.CTkFrame):
         response = msg.get()
 
         if response=="Yes":
-            etcDb.updateCloth(self.clothId, self.clothNm, self.clothImg, self.clothTpCd, self.clothColorCd, self.prchsDe, self.lastUseDe)
+            db.updateCloth(self.clothId, self.clothNm, self.clothImg, self.clothTpCd, self.clothColorCd, self.prchsDe, self.lastUseDe)
 
             ctkmbox(title="정보", message="수정되었습니다.")
 

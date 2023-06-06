@@ -1,11 +1,10 @@
 import io
-import customtkinter as ctt
-from PIL import Image
-from datetime import date, datetime, timedelta
-from dateutil import relativedelta
-import etcDb
+from datetime import date, timedelta
 
-# pages
+from PIL import Image
+import customtkinter as ctt
+
+import db
 
 class DailyLookRegister(ctt.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -98,21 +97,21 @@ class DailyLookRegister(ctt.CTkFrame):
         self.registerButton.bind("<Button-1>", self.registerDailyLook)
 
         # 상의, 하의, 신발 선택
-        self.topList = etcDb.selectCloths(self.master.userId, "TOP")[1]
+        self.topList = db.selectCloths(self.master.userId, "TOP")[1]
         self.topNames = list(map(lambda item: item[1], self.topList))
 
         self.cmboxTop = ctt.CTkComboBox(self, values=self.topNames, state="readonly", command=self.updateClothImage)
         self.cmboxTop.set("")
         self.cmboxTop.place(x=270, y=618)
 
-        self.bottomList = etcDb.selectCloths(self.master.userId, "BOTTOM")[1]
+        self.bottomList = db.selectCloths(self.master.userId, "BOTTOM")[1]
         self.bottomNames = list(map(lambda item: item[1], self.bottomList))
 
         self.cmboxBottom = ctt.CTkComboBox(self, values=self.bottomNames, state="readonly", command=self.updateClothImage)
         self.cmboxBottom.set("")
         self.cmboxBottom.place(x=653, y=618)
 
-        self.shoesList = etcDb.selectCloths(self.master.userId, "SHOES")[1]
+        self.shoesList = db.selectCloths(self.master.userId, "SHOES")[1]
         self.shoesNames = list(map(lambda item: item[1], self.shoesList))
 
         self.cmboxShoes = ctt.CTkComboBox(self, values=self.shoesNames, state="readonly", command=self.updateClothImage)
@@ -141,7 +140,7 @@ class DailyLookRegister(ctt.CTkFrame):
         self.destroy()
 
     def initializeClothImage(self, event):
-        clothDetail = etcDb.selectClothsUseHistByDate(self.master.userId, self.dateInput.get())
+        clothDetail = db.selectClothsUseHistByDate(self.master.userId, self.dateInput.get())
 
         top = None
         bottom = None
@@ -260,7 +259,7 @@ class DailyLookRegister(ctt.CTkFrame):
 
 
         targetDate = self.dateInput.get()
-        clothDetail = etcDb.selectClothsUseHistByDate(self.master.userId, targetDate)
+        clothDetail = db.selectClothsUseHistByDate(self.master.userId, targetDate)
 
         prevTop = None
         prevBottom = None
@@ -276,21 +275,21 @@ class DailyLookRegister(ctt.CTkFrame):
 
         if topClothId is not None:
             if prevTop is not None:
-                etcDb.updateClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
+                db.updateClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
             else:
-                etcDb.insertClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
+                db.insertClothUseHist(targetDate, "TOP", topClothId, self.master.userId)
 
         if bottomClothId is not None:
             if prevBottom is not None:
-                etcDb.updateClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
+                db.updateClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
             else:
-                etcDb.insertClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
+                db.insertClothUseHist(targetDate, "BOTTOM", bottomClothId, self.master.userId)
 
         if shoesClothId is not None:
             if prevShoes is not None:
-                etcDb.updateClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
+                db.updateClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
             else:
-                etcDb.insertClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
+                db.insertClothUseHist(targetDate, "SHOES", shoesClothId, self.master.userId)
 
         self.master.info("데일리코디 등록", "등록 완료되었습니다.")
         self.clickBack(None)
