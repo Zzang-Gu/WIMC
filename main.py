@@ -2,7 +2,6 @@ import customtkinter
 import tkinter.messagebox as tkmb
 
 import loading
-import lobby
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -14,8 +13,7 @@ class App(customtkinter.CTk):
 
         # Default Page Setting (default=Loading)
         self.currentPage = None
-        # self.updatePage(loading.Loading)
-        self.updatePage(lobby.Lobby)
+        self.updatePage(loading.Loading)
 
     def updatePage(self, targetPage):
         if self.currentPage is not None:
