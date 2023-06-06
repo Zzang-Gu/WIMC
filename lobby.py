@@ -1,9 +1,10 @@
 from PIL import Image
 import customtkinter as ctt
 
-import winMyCloset
+import myCloset
 from profile import Profile
 from dailyLookRegister import DailyLookRegister
+from monthlyCody import MonthlyCody
 
 class Lobby(ctt.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -11,8 +12,8 @@ class Lobby(ctt.CTkFrame):
 
         self.master = master
 
-        background = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
-                                     dark_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
+        background = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
+                                     dark_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
                                      size=(1432, 805))
 
         self.background = ctt.CTkLabel(self, image=background, text="")
@@ -69,19 +70,19 @@ class Lobby(ctt.CTkFrame):
         self.master.updatePage(Profile)
 
     def callMenu1(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(myCloset.MyCloset)
 
     def callMenu2(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(myCloset.MyCloset)
 
     def callMenu3(self, event):
         self.master.updatePage(DailyLookRegister)
 
     def callMenu4(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(myCloset.MyCloset)
 
     def callMenu5(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(MonthlyCody)
 
     def callMenu6(self, event):
-        self.master.updatePage(winMyCloset.MyCloset)
+        self.master.updatePage(myCloset.MyCloset)

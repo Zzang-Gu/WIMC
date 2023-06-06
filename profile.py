@@ -22,8 +22,8 @@ class Profile(ctt.CTkFrame):
             self.gender.set(userInfo[0][2])
             self.birthDate.set(userInfo[0][3])
 
-        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
-                                     dark_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
+        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
+                                     dark_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
                                      size=(1432, 805))
 
         popupFrame = ctt.CTkImage(light_image=Image.open(".\\img\\profile\\popupFrame627x673.png"),

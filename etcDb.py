@@ -143,3 +143,73 @@ def selectColorCd():
     rows = result.fetchall()
 
     return rows
+
+def insertClothUseHist(useDe, tpCd, clothId, userId):
+    cur = connectDB()
+
+    query = """
+                INSERT INTO WIMC_CLOTH_USE_HIST 
+                (
+                        USE_DE, 
+                        TP_CD, 
+                        CLOTH_ID,
+                        USER_ID
+                )
+                VALUES 
+                (
+                    ?, 
+                    ?, 
+                    ?,
+                    ?
+                )
+        """
+
+    record = (useDe, tpCd, clothId, userId)
+
+    cur.execute(query, record)
+    cur.commit()
+
+def selectClothsUseHist(userId):
+    cur = connectDB()
+
+    query = """
+        SELECT
+            *
+        FROM
+            WIMC_CLOTH_USE_HIST
+        WHERE
+            USER_ID = ?
+    """
+
+    record = (userId)
+    result = cur.execute(query, record)
+
+    columns = [column[0] for column in cur.description]
+    rows = result.fetchall()
+
+    return rows
+
+def selectClothsUseHistByDate(userId, targetDate):
+    cur = connectDB()
+
+    query = """
+            SELECT
+                WIMC_CLOTH_INFO.*
+            FROM
+                WIMC_CLOTH_USE_HIST
+            LEFT JOIN
+                WIMC_CLOTH_INFO
+            ON 
+                WIMC_CLOTH_USE_HIST.CLOTH_ID = WIMC_CLOTH_INFO.CLOTH_ID
+            WHERE
+                WIMC_CLOTH_USE_HIST.USER_ID = ? AND
+                WIMC_CLOTH_USE_HIST.USE_DE = ?
+        """
+
+    record = (userId, targetDate)
+    result = cur.execute(query, record)
+
+    columns = [column[0] for column in cur.description]
+    rows = result.fetchall()
+
+    return rows

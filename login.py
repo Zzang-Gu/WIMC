@@ -6,6 +6,7 @@ import etcDb
 # pages
 from lobby import Lobby
 
+
 class Login(ctt.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, 1432, 805, **kwargs)
@@ -14,8 +15,8 @@ class Login(ctt.CTkFrame):
         self.initialize()
 
     def initialize(self):
-        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
-                                     dark_image=Image.open(".\\img\\winMyCloset\\background1432x805.png"),
+        imgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
+                                     dark_image=Image.open(".\\img\\myCloset\\background1432x805.png"),
                                      size=(1432, 805))
 
         loginBox = ctt.CTkImage(light_image=Image.open("img/login/login.png"),
