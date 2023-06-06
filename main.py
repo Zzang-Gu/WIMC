@@ -1,14 +1,14 @@
-import customtkinter
+import customtkinter as ctt
 import tkinter.messagebox as tkmb
 
 import loading
 
-class App(customtkinter.CTk):
+class App(ctt.CTk):
     def __init__(self):
         super().__init__()
 
         # initialize
-        self.userId = "20231662"
+        self.userId = None
         self.geometry("1432x805")
 
         # Default Page Setting (default=Loading)

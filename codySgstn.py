@@ -102,8 +102,9 @@ class CodySgstn(ctt.CTkFrame):
         row = db.selectUser(self.master.userId)
         self.userId = row[0][0]
         self.userNm = row[0][1]
-        self.sexCd = row[0][2]
-        self.brthdDe = row[0][3]
+        self.userImg = row[0][2]
+        self.sexCd = row[0][3]
+        self.brthdDe = row[0][4]
 
         self.ctkImgBackground = ctt.CTkImage(light_image=Image.open(".\\img\\codySgstn\\background1432x805.png"), dark_image=Image.open(".\\img\\codySgstn\\background1432x805.png"), size=(1432, 805))
         self.labelBackground = ctt.CTkLabel(self, image=self.ctkImgBackground, text="")
